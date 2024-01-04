@@ -172,5 +172,5 @@ cython_debug/
 # User added
 /.virtual_documents/
 /.vscode/
-
+.env
 # End of https://www.toptal.com/developers/gitignore/api/django
