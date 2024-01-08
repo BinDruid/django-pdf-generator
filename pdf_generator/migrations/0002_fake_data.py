@@ -2,7 +2,7 @@ from django.db import migrations
 
 
 def add_sample_data(apps, schema_editor):
-    Staff = apps.get_model("latex", "Staff")
+    Staff = apps.get_model("pdf_generator", "Staff")
     db_alias = schema_editor.connection.alias
     Staff.objects.using(db_alias).bulk_create(
         [
@@ -14,12 +14,12 @@ def add_sample_data(apps, schema_editor):
 
 
 def remove_sample_data(apps, schema_editor):
-    Staff = apps.get_model("latex", "Staff")
+    Staff = apps.get_model("pdf_generator", "Staff")
     db_alias = schema_editor.connection.alias
     Staff.objects.using(db_alias).all().delete()
 
 class Migration(migrations.Migration):
-    dependencies = [("latex", "0001_initial"),]
+    dependencies = [("pdf_generator", "0001_initial"),]
 
     operations = [
         migrations.RunPython(add_sample_data, remove_sample_data),
