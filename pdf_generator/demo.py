@@ -1,7 +1,7 @@
 from pdf_generator.views import ChromPDFTemplateView, LatexPDFTemplateView
 from .models import Staff
 
-class StaffHTMLPrint(ChromPDFTemplateView):
+class StaffChromePrint(ChromPDFTemplateView):
     template_name = 'staff.html'
 
     def get_context_data(self, **kwargs):
