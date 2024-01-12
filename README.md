@@ -18,8 +18,10 @@ $ pipenv install
 $ python manage.py migrate
 ```
 
-- Run django server and visit home page
+- Run django server and visit demo urls
 
 ```sh
 $ python manage.py runserver
 ```
+
+`localhost:8000/latex/` or `localhost:8000/chrome/`
