@@ -1,4 +1,4 @@
-# Xelatex Template View For Django
+# PDF Generation Template Views For Django
 
 Minimal django application to demo capability of building PDF files inside a
 django template view via `xelatex`.
