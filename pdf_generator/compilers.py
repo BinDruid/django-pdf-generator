@@ -2,26 +2,28 @@ import logging
 import os
 from subprocess import PIPE, run, CalledProcessError
 from tempfile import mkdtemp, NamedTemporaryFile, mkstemp
+from abc import ABC, abstractmethod
 
 logger = logging.getLogger(__name__)
 
 
-class BaseCompiler:
+class BaseCompiler(ABC):
     build_engine: str = None
-    template_file_suffix = None
+    template_file_suffix: str = None
 
-    def __init__(self, template_string):
+    def __init__(self, template_string: str):
         self.template_string = template_string
         self.temporary_build_folder = None
         self.temporary_build_file = None
         self.pdf_file = NamedTemporaryFile(suffix=".pdf")
         self.pdf_file.close()
 
-    def clean_string(self):
+    def clean_string(self) -> str:
         return self.template_string
 
-    def get_build_command(self) -> str:
-        return ''
+    @abstractmethod
+    def get_compile_command(self) -> str:
+        pass
 
     def build(self):
         clean_string = self.clean_string()
@@ -34,7 +36,7 @@ class BaseCompiler:
     def compile(self):
         self.build()
 
-        cmd = self.get_build_command()
+        cmd = self.get_compile_command()
         try:
             run(cmd, shell=True, stdout=PIPE, stderr=PIPE, check=True)
 
@@ -64,7 +66,7 @@ class LatexCompiler(BaseCompiler):
         clean_string = clean_string.replace('ي', 'ی')
         return clean_string
 
-    def get_build_command(self) -> str:
+    def get_compile_command(self) -> str:
         cmd = f'{self.build_engine} -halt-on-error -output-directory={self.temporary_build_folder} {self.temporary_build_file}'
         return cmd
 
@@ -83,6 +85,6 @@ class ChromeCompiler(BaseCompiler):
     build_engine = 'google-chrome-stable'
     template_file_suffix = '.html'
 
-    def get_build_command(self) -> str:
+    def get_compile_command(self) -> str:
         cmd = f'{self.build_engine} --headless --no-sandbox --disable-gpu --print-to-pdf-no-header --print-to-pdf-no-footer --print-to-pdf={self.pdf_file.name} {self.temporary_build_file}'
         return cmd
